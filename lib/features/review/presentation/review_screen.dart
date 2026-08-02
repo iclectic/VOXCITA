@@ -7,9 +7,7 @@ class ReviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Review'),
-      ),
+      appBar: AppBar(title: const Text('Review')),
       body: const EmptyState(
         icon: Icons.task_alt_outlined,
         title: 'Nothing to review',

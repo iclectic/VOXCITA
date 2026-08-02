@@ -7,9 +7,7 @@ class TranscriptionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Transcription'),
-      ),
+      appBar: AppBar(title: const Text('Transcription')),
       body: const EmptyState(
         icon: Icons.transcribe_outlined,
         title: 'No transcriptions yet',

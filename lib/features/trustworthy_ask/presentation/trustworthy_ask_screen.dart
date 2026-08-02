@@ -7,9 +7,7 @@ class TrustworthyAskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Trustworthy Ask'),
-      ),
+      appBar: AppBar(title: const Text('Trustworthy Ask')),
       body: const EmptyState(
         icon: Icons.help_outline,
         title: 'Ask with sources',

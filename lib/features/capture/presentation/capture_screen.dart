@@ -7,9 +7,7 @@ class CaptureScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Capture'),
-      ),
+      appBar: AppBar(title: const Text('Capture')),
       body: const EmptyState(
         icon: Icons.mic_none_outlined,
         title: 'Ready to record',

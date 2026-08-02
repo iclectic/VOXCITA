@@ -7,9 +7,7 @@ class LibraryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Library'),
-      ),
+      appBar: AppBar(title: const Text('Library')),
       body: const EmptyState(
         icon: Icons.library_books_outlined,
         title: 'Your library is empty',

@@ -6,26 +6,26 @@ final class AppTheme {
   const AppTheme._();
 
   static ThemeData get light => _buildTheme(
-        colorScheme: AppColors.lightScheme,
-        textTheme: AppTypography.lightTextTheme,
-      );
+    colorScheme: AppColors.lightScheme,
+    textTheme: AppTypography.lightTextTheme,
+  );
 
   static ThemeData get dark => _buildTheme(
-        colorScheme: AppColors.darkScheme,
-        textTheme: AppTypography.darkTextTheme,
-        brightness: Brightness.dark,
-      );
+    colorScheme: AppColors.darkScheme,
+    textTheme: AppTypography.darkTextTheme,
+    brightness: Brightness.dark,
+  );
 
   static ThemeData get highContrastLight => _buildTheme(
-        colorScheme: AppColors.highContrastLightScheme,
-        textTheme: AppTypography.lightTextTheme,
-      );
+    colorScheme: AppColors.highContrastLightScheme,
+    textTheme: AppTypography.lightTextTheme,
+  );
 
   static ThemeData get highContrastDark => _buildTheme(
-        colorScheme: AppColors.highContrastDarkScheme,
-        textTheme: AppTypography.darkTextTheme,
-        brightness: Brightness.dark,
-      );
+    colorScheme: AppColors.highContrastDarkScheme,
+    textTheme: AppTypography.darkTextTheme,
+    brightness: Brightness.dark,
+  );
 
   static ThemeData _buildTheme({
     required ColorScheme colorScheme,
@@ -50,9 +50,7 @@ final class AppTheme {
       ),
       cardTheme: CardThemeData(
         elevation: 1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         color: colorScheme.surface,
       ),
       filledButtonTheme: FilledButtonThemeData(
@@ -72,9 +70,7 @@ final class AppTheme {
         ),
       ),
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          minimumSize: const Size(48, 48),
-        ),
+        style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -89,9 +85,7 @@ final class AppTheme {
         ),
       ),
       chipTheme: ChipThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: colorScheme.surface,

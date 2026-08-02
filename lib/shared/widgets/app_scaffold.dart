@@ -3,10 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:voxcita/app/routing/routes.dart';
 
 class AppScaffold extends StatelessWidget {
-  const AppScaffold({
-    required this.child,
-    super.key,
-  });
+  const AppScaffold({required this.child, super.key});
 
   final Widget child;
 
@@ -26,17 +23,11 @@ class AppScaffold extends StatelessWidget {
           context.go(AppDestination.values[index].route);
         },
         destinations: AppDestination.values.map((dest) {
-          final isSelected = dest == currentDestination;
           return NavigationDestination(
-            icon: Semantics(
-              label: '${dest.label} tab',
-              child: Icon(dest.icon),
-            ),
-            selectedIcon: Semantics(
-              label: '${dest.label} tab, selected',
-              child: Icon(dest.selectedIcon),
-            ),
+            icon: Icon(dest.icon),
+            selectedIcon: Icon(dest.selectedIcon),
             label: dest.label,
+            tooltip: dest.label,
           );
         }).toList(),
       ),

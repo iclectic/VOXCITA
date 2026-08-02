@@ -28,9 +28,7 @@ class EmptyState extends StatelessWidget {
             Icon(
               icon,
               size: 64,
-              color: theme.colorScheme.onSurfaceVariant.withValues(
-                alpha: 0.5,
-              ),
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
             ),
             AppSpacing.gapLg,
             Text(
@@ -48,10 +46,7 @@ class EmptyState extends StatelessWidget {
               textAlign: TextAlign.center,
               semanticsLabel: message,
             ),
-            if (action != null) ...[
-              AppSpacing.gapXl,
-              action!,
-            ],
+            if (action != null) ...[AppSpacing.gapXl, action!],
           ],
         ),
       ),

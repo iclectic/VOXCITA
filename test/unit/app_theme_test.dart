@@ -45,18 +45,18 @@ void main() {
     });
 
     test('recording active colour is red-toned for visibility', () {
-      expect(AppColors.recordingActive.red, greaterThan(150));
-      expect(AppColors.recordingActive.green, lessThan(100));
+      expect((AppColors.recordingActive.r * 255).round(), greaterThan(150));
+      expect((AppColors.recordingActive.g * 255).round(), lessThan(100));
     });
 
     test('verified badge colour is green-toned', () {
-      expect(AppColors.verifiedBadge.green, greaterThan(100));
-      expect(AppColors.verifiedBadge.red, lessThan(100));
+      expect((AppColors.verifiedBadge.g * 255).round(), greaterThan(100));
+      expect((AppColors.verifiedBadge.r * 255).round(), lessThan(100));
     });
 
     test('unsupported badge colour is red-toned', () {
-      expect(AppColors.unsupportedBadge.red, greaterThan(150));
-      expect(AppColors.unsupportedBadge.green, lessThan(100));
+      expect((AppColors.unsupportedBadge.r * 255).round(), greaterThan(150));
+      expect((AppColors.unsupportedBadge.g * 255).round(), lessThan(100));
     });
   });
 

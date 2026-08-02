@@ -7,9 +7,7 @@ class InsightsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Insights'),
-      ),
+      appBar: AppBar(title: const Text('Insights')),
       body: const EmptyState(
         icon: Icons.lightbulb_outline,
         title: 'No insights yet',

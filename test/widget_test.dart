@@ -37,9 +37,7 @@ void main() {
     'AppScaffold renders all navigation destinations with correct labels',
     (tester) async {
       await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: buildTestRouter(),
-        ),
+        MaterialApp.router(routerConfig: buildTestRouter()),
       );
       await tester.pumpAndSettle();
 
@@ -51,27 +49,22 @@ void main() {
     },
   );
 
-  testWidgets(
-    'AppScaffold shows LibraryScreen as initial destination',
-    (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: buildTestRouter(),
-        ),
-      );
-      await tester.pumpAndSettle();
+  testWidgets('AppScaffold shows LibraryScreen as initial destination', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp.router(routerConfig: buildTestRouter()),
+    );
+    await tester.pumpAndSettle();
 
-      expect(find.text('Your library is empty'), findsOneWidget);
-    },
-  );
+    expect(find.text('Your library is empty'), findsOneWidget);
+  });
 
   testWidgets(
     'Tapping Settings navigation destination routes to SettingsScreen',
     (tester) async {
       await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: buildTestRouter(),
-        ),
+        MaterialApp.router(routerConfig: buildTestRouter()),
       );
       await tester.pumpAndSettle();
 
@@ -88,9 +81,7 @@ void main() {
     'Tapping Capture navigation destination routes to CaptureScreen',
     (tester) async {
       await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: buildTestRouter(),
-        ),
+        MaterialApp.router(routerConfig: buildTestRouter()),
       );
       await tester.pumpAndSettle();
 
@@ -101,24 +92,21 @@ void main() {
     },
   );
 
-  testWidgets(
-    'Navigation destinations have semantic labels for screen readers',
-    (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(
-          routerConfig: buildTestRouter(),
-        ),
-      );
-      await tester.pumpAndSettle();
+  testWidgets('Navigation destinations have tooltips for accessibility', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp.router(routerConfig: buildTestRouter()),
+    );
+    await tester.pumpAndSettle();
 
-      expect(
-        find.bySemanticsLabel('Library tab'),
-        findsOneWidget,
-      );
-      expect(
-        find.bySemanticsLabel('Settings tab, selected'),
-        findsOneWidget,
-      );
-    },
-  );
+    final navBar = tester.widget<NavigationBar>(find.byType(NavigationBar));
+    expect(navBar.destinations.length, 5);
+
+    for (final dest in navBar.destinations) {
+      final navDest = dest as NavigationDestination;
+      expect(navDest.tooltip, isNotEmpty);
+      expect(navDest.label, isNotEmpty);
+    }
+  });
 }
