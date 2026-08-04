@@ -4,6 +4,8 @@ import 'package:voxcita/app/routing/routes.dart';
 import 'package:voxcita/features/capture/presentation/capture_screen.dart';
 import 'package:voxcita/features/insights/presentation/insights_screen.dart';
 import 'package:voxcita/features/library/presentation/library_screen.dart';
+import 'package:voxcita/features/library/presentation/note_detail_screen.dart';
+import 'package:voxcita/features/library/presentation/note_editor_screen.dart';
 import 'package:voxcita/features/review/presentation/review_screen.dart';
 import 'package:voxcita/features/settings/presentation/settings_screen.dart';
 import 'package:voxcita/features/transcription/presentation/transcription_screen.dart';
@@ -22,6 +24,22 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppRoutes.library,
             builder: (context, state) => const LibraryScreen(),
+            routes: [
+              GoRoute(
+                path: 'new',
+                builder: (context, state) => const NoteEditorScreen(),
+              ),
+              GoRoute(
+                path: ':noteId/edit',
+                builder: (context, state) =>
+                    NoteEditorScreen(noteId: state.pathParameters['noteId']),
+              ),
+              GoRoute(
+                path: ':noteId',
+                builder: (context, state) =>
+                    NoteDetailScreen(noteId: state.pathParameters['noteId']!),
+              ),
+            ],
           ),
           GoRoute(
             path: AppRoutes.capture,

@@ -1,7 +1,12 @@
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 import 'package:voxcita/app/routing/routes.dart';
+import 'package:voxcita/core/database/database_provider.dart';
+import 'package:voxcita/core/database/voxcita_database.dart';
 import 'package:voxcita/features/capture/presentation/capture_screen.dart';
 import 'package:voxcita/features/library/presentation/library_screen.dart';
 import 'package:voxcita/features/settings/presentation/settings_screen.dart';
@@ -33,13 +38,27 @@ void main() {
     );
   }
 
+  Future<void> pumpRouter(WidgetTester tester, GoRouter router) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          voxCitaDatabaseProvider.overrideWith((ref) {
+            final db = VoxCitaDatabase.forTesting(NativeDatabase.memory());
+            ref.onDispose(db.close);
+            return db;
+          }),
+          uuidProvider.overrideWith((ref) => const Uuid()),
+        ],
+        child: MaterialApp.router(routerConfig: router),
+      ),
+    );
+    await tester.pumpAndSettle();
+  }
+
   testWidgets(
     'AppScaffold renders all navigation destinations with correct labels',
     (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(routerConfig: buildTestRouter()),
-      );
-      await tester.pumpAndSettle();
+      await pumpRouter(tester, buildTestRouter());
 
       expect(find.text('Library'), findsWidgets);
       expect(find.text('Capture'), findsWidgets);
@@ -52,10 +71,7 @@ void main() {
   testWidgets('AppScaffold shows LibraryScreen as initial destination', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      MaterialApp.router(routerConfig: buildTestRouter()),
-    );
-    await tester.pumpAndSettle();
+    await pumpRouter(tester, buildTestRouter());
 
     expect(find.text('Your library is empty'), findsOneWidget);
   });
@@ -63,10 +79,7 @@ void main() {
   testWidgets(
     'Tapping Settings navigation destination routes to SettingsScreen',
     (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(routerConfig: buildTestRouter()),
-      );
-      await tester.pumpAndSettle();
+      await pumpRouter(tester, buildTestRouter());
 
       await tester.tap(find.text('Settings').last);
       await tester.pumpAndSettle();
@@ -80,10 +93,7 @@ void main() {
   testWidgets(
     'Tapping Capture navigation destination routes to CaptureScreen',
     (tester) async {
-      await tester.pumpWidget(
-        MaterialApp.router(routerConfig: buildTestRouter()),
-      );
-      await tester.pumpAndSettle();
+      await pumpRouter(tester, buildTestRouter());
 
       await tester.tap(find.text('Capture').last);
       await tester.pumpAndSettle();
@@ -95,10 +105,7 @@ void main() {
   testWidgets('Navigation destinations have tooltips for accessibility', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      MaterialApp.router(routerConfig: buildTestRouter()),
-    );
-    await tester.pumpAndSettle();
+    await pumpRouter(tester, buildTestRouter());
 
     final navBar = tester.widget<NavigationBar>(find.byType(NavigationBar));
     expect(navBar.destinations.length, 5);

@@ -8,6 +8,10 @@ abstract final class AppRoutes {
   static const String trustworthyAsk = '/trustworthy-ask';
   static const String review = '/review';
   static const String settings = '/settings';
+
+  static String noteDetail(String noteId) => '$library/$noteId';
+  static String noteEdit(String noteId) => '$library/$noteId/edit';
+  static const String noteNew = '$library/new';
 }
 
 enum AppDestination {
