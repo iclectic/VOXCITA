@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voxcita/app/routing/routes.dart';
 import 'package:voxcita/features/capture/presentation/capture_screen.dart';
+import 'package:voxcita/features/insights/presentation/insight_detail_screen.dart';
 import 'package:voxcita/features/insights/presentation/insights_screen.dart';
 import 'package:voxcita/features/library/presentation/library_screen.dart';
 import 'package:voxcita/features/library/presentation/note_detail_screen.dart';
@@ -52,6 +53,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppRoutes.insights,
             builder: (context, state) => const InsightsScreen(),
+            routes: [
+              GoRoute(
+                path: ':claimId',
+                builder: (context, state) => InsightDetailScreen(
+                  claimId: state.pathParameters['claimId']!,
+                ),
+              ),
+            ],
           ),
           GoRoute(
             path: AppRoutes.trustworthyAsk,

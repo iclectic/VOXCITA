@@ -12,6 +12,7 @@ abstract final class AppRoutes {
   static String noteDetail(String noteId) => '$library/$noteId';
   static String noteEdit(String noteId) => '$library/$noteId/edit';
   static const String noteNew = '$library/new';
+  static String insightDetail(String claimId) => '$insights/$claimId';
 }
 
 enum AppDestination {
