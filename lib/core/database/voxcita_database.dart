@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:voxcita/core/database/tables/ask_history.dart';
 import 'package:voxcita/core/database/tables/audio_assets.dart';
 import 'package:voxcita/core/database/tables/claim_sources.dart';
 import 'package:voxcita/core/database/tables/collections.dart';
@@ -38,6 +39,7 @@ part 'voxcita_database.g.dart';
     ProcessingJobs,
     ModelRuns,
     UserFeedback,
+    AskHistory,
     SchemaMigrations,
   ],
 )
@@ -47,7 +49,7 @@ class VoxCitaDatabase extends _$VoxCitaDatabase {
   VoxCitaDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration {
@@ -55,6 +57,12 @@ class VoxCitaDatabase extends _$VoxCitaDatabase {
       onCreate: (m) async {
         await m.createAll();
         await _recordMigration(m, 1, 'Initial schema');
+      },
+      onUpgrade: (m, from, to) async {
+        if (from < 2) {
+          await m.createTable(askHistory);
+          await _recordMigration(m, 2, 'Add ask_history table');
+        }
       },
       beforeOpen: (details) async {
         await customStatement('PRAGMA foreign_keys = ON');

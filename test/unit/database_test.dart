@@ -54,8 +54,8 @@ void main() {
       expect(migrations.first.description, 'Initial schema');
     });
 
-    test('schema version is 1', () {
-      expect(db.schemaVersion, 1);
+    test('schema version is 2', () {
+      expect(db.schemaVersion, 2);
     });
   });
 

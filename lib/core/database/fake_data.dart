@@ -4,6 +4,7 @@ import 'package:voxcita/core/database/voxcita_database.dart';
 import 'package:voxcita/features/capture/domain/recording_session_status.dart';
 import 'package:voxcita/features/insights/domain/insight_type.dart';
 import 'package:voxcita/features/library/domain/note_type.dart';
+import 'package:voxcita/features/trustworthy_ask/domain/ask_result_type.dart';
 
 class FakeData {
   FakeData(this._uuid);
@@ -168,6 +169,38 @@ class FakeData {
             status: RecordingSessionStatus.completed.name,
             startedAt: now,
             endedAt: Value(now),
+          ),
+        );
+
+    await db
+        .into(db.askHistory)
+        .insert(
+          AskHistoryCompanion.insert(
+            id: _uuid.v4(),
+            query: 'What are the Q3 priorities?',
+            resultType: AskResultType.answered.name,
+            answerText:
+                'Based on 1 source from your recordings, here is what was '
+                'found related to "What are the Q3 priorities?":\n\n'
+                '[1] "We should prioritise the recording reliability work." '
+                '— Team planning discussion (00:05)',
+            confidence: const Value(0.85),
+            sourceNoteIds: noteId,
+            createdAt: now,
+          ),
+        );
+
+    await db
+        .into(db.userFeedback)
+        .insert(
+          UserFeedbackCompanion.insert(
+            id: _uuid.v4(),
+            claimId: Value(claimId),
+            feedbackType: 'helpful',
+            feedbackDetail: const Value(
+              'This insight accurately captures the key decision.',
+            ),
+            createdAt: now,
           ),
         );
   }

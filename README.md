@@ -22,21 +22,64 @@ VoxCita is built on a single principle: **every insight has a source**.
 
 ## Current Status
 
-**Phase 0: Foundation**
+**Version 0.1.0** - Beta ready
 
-This repository contains the Flutter project skeleton with:
+All core features are implemented and tested:
 
-- Feature-first modular architecture (presentation, application, domain, data)
-- Riverpod state management with code generation
-- Drift and SQLite persistence configuration
-- go_router navigation with bottom navigation
-- Light, dark and high-contrast themes
-- Strict static analysis
-- CI for formatting, analysis and tests
-- Architecture Decision Records
-- Product brief and threat model
+- **Audio capture**: Resilient recording with real-time waveform, durable file storage, and recovery from interruptions
+- **Library**: Unified note management with full-text search, collections, tags, and accessible interface
+- **Encrypted archive**: AES-256 encrypted export and restoration with platform biometric authentication
+- **Transcription**: Timestamped transcription with segment-level editing and revision history
+- **Cited insights**: AI-generated summaries, decisions, actions, questions and ideas with source citations, validation, and Source Tap audio playback
+- **Trustworthy Ask**: Cited answers with inline references, confidence scoring, and abstention when evidence is insufficient
+- **Analytics**: Privacy-preserving local metrics (no data leaves the device)
+- **User feedback**: Per-insight feedback with helpful/not helpful/incorrect/suggestion types
 
-Recording, transcription and AI functionality will be added in subsequent phases.
+198 passing tests. Zero analysis issues.
+
+## Features
+
+### Audio Capture
+- Resilient recording with real-time waveform display
+- Durable file-system storage with SHA-256 integrity hashing
+- Automatic recovery from interrupted recordings
+- Recording session persistence
+
+### Library
+- Unified voice and text note management
+- Full-text search across titles and bodies
+- Collections and tags for organisation
+- Note detail view with transcript and insights
+- Accessible interface with semantic labels
+
+### Transcription
+- Timestamped transcription with segment-level granularity
+- Transcript correction with revision history
+- Original recognition result preservation
+- Processing job tracking with progress
+
+### Cited Insights
+- Insight types: summary, decision, action, question, idea
+- Every claim links to transcript segments and audio timestamps
+- Citation validator verifies source references
+- Source Tap: tap a citation to play the original audio
+- Verification states: verified, corrected, unsupported, needs review
+- Evidence timeline visualisation
+
+### Trustworthy Ask
+- Ask questions across selected recordings
+- Cited answers with inline [1][2] references
+- Confidence scoring with configurable threshold
+- Abstention when evidence is insufficient
+- Source Tap audio playback from source cards
+- Ask history persistence
+
+### Privacy and Analytics
+- Local-first: all processing happens on device
+- No telemetry, no cloud required
+- Privacy-preserving analytics dashboard
+- User feedback on insights (stays on device)
+- Biometric lock for app access
 
 ## Architecture
 
@@ -45,9 +88,10 @@ VoxCita uses a feature-first modular structure with strict layer boundaries.
 ```
 lib
   app           Bootstrap, routing, theme
-  core          Audio, database, errors, security, telemetry
+  core          Audio, database, errors, security
   features      capture, library, transcription, insights,
-                trustworthy_ask, review, settings
+                trustworthy_ask, review, feedback, analytics,
+                settings
   shared        Utilities, widgets
 ```
 
@@ -132,17 +176,47 @@ flutter test
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 0 | Foundation: architecture, CI, ADRs, skeleton | In progress |
-| 1 | Drift schema, repositories, migrations, fake data | Pending |
-| 2 | Resilient audio capture, durable files, real waveform, recovery | Pending |
-| 3 | Unified library, search, collections, tags, accessible interface | Pending |
-| 4 | Encrypted archive export, restoration, platform authentication | Pending |
-| 5 | Timestamped transcription contract, first adapter, benchmark harness | Pending |
-| 6 | Transcript correction and revision history | Pending |
-| 7 | Cited Insights, citation validation, Source Check, Source Tap | Pending |
-| 8 | Trustworthy Ask with cited answers and abstention | Pending |
-| 9 | Privacy-preserving analytics, user feedback, beta hardening | Pending |
-| 10 | Release automation, store readiness, public documentation | Pending |
+| 0 | Foundation: architecture, CI, ADRs, skeleton | Complete |
+| 1 | Drift schema, repositories, migrations, fake data | Complete |
+| 2 | Resilient audio capture, durable files, real waveform, recovery | Complete |
+| 3 | Unified library, search, collections, tags, accessible interface | Complete |
+| 4 | Encrypted archive export, restoration, platform authentication | Complete |
+| 5 | Timestamped transcription contract, first adapter, benchmark harness | Complete |
+| 6 | Transcript correction and revision history | Complete |
+| 7 | Cited Insights, citation validation, Source Check, Source Tap | Complete |
+| 8 | Trustworthy Ask with cited answers and abstention | Complete |
+| 9 | Privacy-preserving analytics, user feedback, beta hardening | Complete |
+| 10 | Release automation, store readiness, public documentation | Complete |
+
+## Releasing
+
+Releases are automated via GitHub Actions. To create a new release:
+
+```bash
+# Update version in pubspec.yaml
+# Update CHANGELOG.md
+# Commit and tag
+
+git tag v0.x.x
+
+git push origin v0.x.x
+```
+
+The release workflow will:
+1. Run format, analysis and tests
+2. Build Android APKs (per-ABI split)
+3. Build iOS IPA
+4. Create a GitHub Release with all build artifacts
+
+For local release builds:
+
+```bash
+make release    # Run checks and build Android APK
+make android    # Build Android APK only
+make ios        # Build iOS only
+```
+
+See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Documentation
 
@@ -151,6 +225,8 @@ flutter test
 - [ADR-0001: Feature-First Architecture](docs/adr/0001-feature-first-architecture.md)
 - [ADR-0002: Riverpod State Management](docs/adr/0002-riverpod-state-management.md)
 - [ADR-0003: Drift and File-System Audio Storage](docs/adr/0003-drift-and-file-storage.md)
+- [Store Listing Metadata](docs/product/store-listing.md)
+- [Changelog](CHANGELOG.md)
 
 ## Contributing
 

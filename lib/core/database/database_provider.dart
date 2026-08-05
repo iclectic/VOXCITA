@@ -13,6 +13,8 @@ import 'package:voxcita/features/library/domain/note_repository.dart';
 import 'package:voxcita/features/library/domain/tag_repository.dart';
 import 'package:voxcita/features/transcription/data/transcript_repository_impl.dart';
 import 'package:voxcita/features/transcription/domain/transcript_repository.dart';
+import 'package:voxcita/features/feedback/data/feedback_repository.dart';
+import 'package:voxcita/features/trustworthy_ask/data/ask_history_repository.dart';
 
 final voxCitaDatabaseProvider = Provider<VoxCitaDatabase>((ref) {
   final db = VoxCitaDatabase();
@@ -59,6 +61,20 @@ final collectionRepositoryProvider = Provider<CollectionRepository>((ref) {
 
 final tagRepositoryProvider = Provider<TagRepository>((ref) {
   return TagRepositoryImpl(
+    ref.watch(voxCitaDatabaseProvider),
+    ref.watch(uuidProvider),
+  );
+});
+
+final askHistoryRepositoryProvider = Provider<AskHistoryRepository>((ref) {
+  return AskHistoryRepository(
+    ref.watch(voxCitaDatabaseProvider),
+    ref.watch(uuidProvider),
+  );
+});
+
+final feedbackRepositoryProvider = Provider<FeedbackRepository>((ref) {
+  return FeedbackRepository(
     ref.watch(voxCitaDatabaseProvider),
     ref.watch(uuidProvider),
   );

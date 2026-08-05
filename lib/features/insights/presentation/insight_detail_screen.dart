@@ -3,10 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:voxcita/app/routing/routes.dart';
 import 'package:voxcita/app/theme/app_spacing.dart';
+import 'package:voxcita/core/audio/audio_player_controller.dart';
+import 'package:voxcita/features/capture/domain/audio_asset_entity.dart';
+import 'package:voxcita/features/feedback/application/feedback_controller.dart';
+import 'package:voxcita/features/feedback/domain/feedback_entity.dart';
 import 'package:voxcita/features/insights/application/insight_detail_controller.dart';
 import 'package:voxcita/features/insights/domain/insight_claim_entity.dart';
 import 'package:voxcita/features/insights/domain/insight_type.dart';
 import 'package:voxcita/features/insights/domain/verification_state.dart';
+import 'package:voxcita/shared/widgets/audio_player_widget.dart';
+import 'package:voxcita/shared/widgets/evidence_timeline.dart';
 import 'package:voxcita/shared/widgets/empty_state.dart';
 
 class InsightDetailScreen extends ConsumerWidget {
@@ -127,11 +133,49 @@ class _Body extends ConsumerWidget {
         AppSpacing.gapLg,
         _VerificationActions(claim: claim, claimId: claimId),
         AppSpacing.gapLg,
-        _SourcesSection(claim: claim),
+        if (state.hasAudio && state.audioAsset != null) ...[
+          AudioPlayerWidget(
+            audioAsset: state.audioAsset!,
+            label: 'Source audio',
+          ),
+          AppSpacing.gapLg,
+        ],
+        if (state.validation != null)
+          EvidenceTimeline(
+            claim: claim,
+            segments: state.segments,
+            validation: state.validation!,
+            onSourceTap: (source, segment) =>
+                _onSourceTap(context, ref, source, state.audioAsset),
+          )
+        else
+          _SourcesSection(claim: claim),
         AppSpacing.gapLg,
         _MetadataSection(claim: claim),
+        AppSpacing.gapLg,
+        _FeedbackSection(claimId: claimId),
       ],
     );
+  }
+
+  void _onSourceTap(
+    BuildContext context,
+    WidgetRef ref,
+    ClaimSourceEntity source,
+    AudioAssetEntity? audioAsset,
+  ) async {
+    if (audioAsset == null) return;
+    final controller = ref.read(audioPlayerControllerProvider.notifier);
+    final playerState = ref.read(audioPlayerControllerProvider);
+
+    if (playerState.currentAudioId != audioAsset.id) {
+      await controller.loadAudio(
+        audioId: audioAsset.id,
+        relativePath: audioAsset.relativePath,
+      );
+    }
+    await controller.seekToMs(source.audioStartMs);
+    await controller.play();
   }
 }
 
@@ -442,5 +486,174 @@ class _VerificationBadge extends StatelessWidget {
         style: theme.textTheme.labelSmall?.copyWith(color: color),
       ),
     );
+  }
+}
+
+class _FeedbackSection extends ConsumerStatefulWidget {
+  const _FeedbackSection({required this.claimId});
+
+  final String claimId;
+
+  @override
+  ConsumerState<_FeedbackSection> createState() => _FeedbackSectionState();
+}
+
+class _FeedbackSectionState extends ConsumerState<_FeedbackSection> {
+  final _detailController = TextEditingController();
+  bool _showDetailField = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(feedbackControllerProvider.notifier)
+          .loadFeedbackForClaim(widget.claimId);
+    });
+  }
+
+  @override
+  void dispose() {
+    _detailController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final state = ref.watch(feedbackControllerProvider);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Feedback', style: theme.textTheme.titleSmall),
+        AppSpacing.gapXs,
+        Text(
+          'Is this insight helpful? Your feedback stays on your device.',
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+        AppSpacing.gapSm,
+        if (state.isSubmitting)
+          const Padding(
+            padding: AppSpacing.paddingSm,
+            child: Center(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ),
+          )
+        else
+          Wrap(
+            spacing: AppSpacing.sm,
+            children: FeedbackType.values.map((type) {
+              final isSelected = state.feedbackForClaim?.feedbackType == type;
+              return ActionChip(
+                label: Text(type.displayName),
+                avatar: Icon(type.icon, size: 18),
+                backgroundColor: isSelected
+                    ? theme.colorScheme.primary.withValues(alpha: 0.12)
+                    : null,
+                onPressed: () => _submitFeedback(type),
+              );
+            }).toList(),
+          ),
+        if (state.hasFeedback && state.feedbackForClaim!.hasDetail) ...[
+          AppSpacing.gapSm,
+          Container(
+            padding: AppSpacing.paddingSm,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              state.feedbackForClaim!.feedbackDetail!,
+              style: theme.textTheme.bodySmall,
+            ),
+          ),
+        ],
+        if (!_showDetailField && !state.isSubmitting)
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpacing.xs),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: () => setState(() => _showDetailField = true),
+                icon: const Icon(Icons.edit_note, size: 18),
+                label: const Text('Add detail'),
+              ),
+            ),
+          ),
+        if (_showDetailField) ...[
+          AppSpacing.gapSm,
+          TextField(
+            controller: _detailController,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              labelText: 'Additional detail (optional)',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          AppSpacing.gapXs,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => setState(() => _showDetailField = false),
+                child: const Text('Cancel'),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              FilledButton(
+                onPressed: () {
+                  final detail = _detailController.text.trim();
+                  if (detail.isNotEmpty) {
+                    final currentType = state.feedbackForClaim?.feedbackType;
+                    if (currentType != null) {
+                      ref
+                          .read(feedbackControllerProvider.notifier)
+                          .submitFeedback(
+                            claimId: widget.claimId,
+                            type: currentType,
+                            detail: detail,
+                          );
+                    }
+                  }
+                  setState(() => _showDetailField = false);
+                  _detailController.clear();
+                },
+                child: const Text('Save'),
+              ),
+            ],
+          ),
+        ],
+        if (state.hasError)
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpacing.xs),
+            child: Text(
+              state.error!,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.error,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  void _submitFeedback(FeedbackType type) {
+    ref
+        .read(feedbackControllerProvider.notifier)
+        .submitFeedback(
+          claimId: widget.claimId,
+          type: type,
+          detail: _detailController.text.trim().isNotEmpty
+              ? _detailController.text.trim()
+              : null,
+        );
+    setState(() => _showDetailField = false);
+    _detailController.clear();
   }
 }

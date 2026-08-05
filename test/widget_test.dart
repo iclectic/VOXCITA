@@ -63,6 +63,7 @@ void main() {
       expect(find.text('Library'), findsWidgets);
       expect(find.text('Capture'), findsWidgets);
       expect(find.text('Insights'), findsWidgets);
+      expect(find.text('Ask'), findsWidgets);
       expect(find.text('Review'), findsWidgets);
       expect(find.text('Settings'), findsWidgets);
     },
@@ -86,7 +87,7 @@ void main() {
 
       expect(find.text('Appearance'), findsOneWidget);
       expect(find.text('Security'), findsOneWidget);
-      expect(find.text('Backup and restore'), findsOneWidget);
+      expect(find.text('Data'), findsOneWidget);
     },
   );
 
@@ -108,7 +109,7 @@ void main() {
     await pumpRouter(tester, buildTestRouter());
 
     final navBar = tester.widget<NavigationBar>(find.byType(NavigationBar));
-    expect(navBar.destinations.length, 5);
+    expect(navBar.destinations.length, 6);
 
     for (final dest in navBar.destinations) {
       final navDest = dest as NavigationDestination;

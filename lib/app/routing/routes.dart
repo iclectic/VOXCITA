@@ -8,11 +8,16 @@ abstract final class AppRoutes {
   static const String trustworthyAsk = '/trustworthy-ask';
   static const String review = '/review';
   static const String settings = '/settings';
+  static const String settingsAppearance = '/settings/appearance';
+  static const String settingsPrivacy = '/settings/privacy';
+  static const String settingsAbout = '/settings/about';
+  static const String settingsAnalytics = '/settings/analytics';
 
   static String noteDetail(String noteId) => '$library/$noteId';
   static String noteEdit(String noteId) => '$library/$noteId/edit';
   static const String noteNew = '$library/new';
   static String insightDetail(String claimId) => '$insights/$claimId';
+  static String transcriptDetail(String noteId) => '$transcription/$noteId';
 }
 
 enum AppDestination {
@@ -33,6 +38,12 @@ enum AppDestination {
     icon: Icons.lightbulb_outline,
     selectedIcon: Icons.lightbulb,
     route: AppRoutes.insights,
+  ),
+  trustworthyAsk(
+    label: 'Ask',
+    icon: Icons.question_answer_outlined,
+    selectedIcon: Icons.question_answer,
+    route: AppRoutes.trustworthyAsk,
   ),
   review(
     label: 'Review',

@@ -1,0 +1,94 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: dart format --set-exit-if-changed .
+      - run: flutter analyze --fatal-infos
+      - run: flutter test
+
+  android-release:
+    name: Android Release APK
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter build apk --release --split-per-abi
+      - name: Rename APKs
+        run: |
+          mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk voxcita-android-arm64.apk
+          mv build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk voxcita-android-arm32.apk
+          mv build/app/outputs/flutter-apk/app-x86_64-release.apk voxcita-android-x64.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-apks
+          path: |
+            voxcita-android-arm64.apk
+            voxcita-android-arm32.apk
+            voxcita-android-x64.apk
+
+  ios-release:
+    name: iOS Release IPA
+    needs: test
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter build ios --release --no-codesign
+      - name: Create IPA
+        run: |
+          mkdir -p Payload
+          cp -r build/ios/Release-iphoneos/Runner.app Payload/Runner.app
+          zip -r voxcita-ios.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios-ipa
+          path: voxcita-ios.ipa
+
+  github-release:
+    name: Create GitHub Release
+    needs: [android-release, ios-release]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: android-apks
+          path: artifacts
+      - uses: actions/download-artifact@v4
+        with:
+          name: ios-ipa
+          path: artifacts
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            artifacts/voxcita-android-arm64.apk
+            artifacts/voxcita-android-arm32.apk
+            artifacts/voxcita-android-x64.apk
+            artifacts/voxcita-ios.ipa

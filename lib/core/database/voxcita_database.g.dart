@@ -6702,6 +6702,533 @@ class UserFeedbackCompanion extends UpdateCompanion<UserFeedbackData> {
   }
 }
 
+class $AskHistoryTable extends AskHistory
+    with TableInfo<$AskHistoryTable, AskHistoryData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AskHistoryTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _queryMeta = const VerificationMeta('query');
+  @override
+  late final GeneratedColumn<String> query = GeneratedColumn<String>(
+    'query',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _resultTypeMeta = const VerificationMeta(
+    'resultType',
+  );
+  @override
+  late final GeneratedColumn<String> resultType = GeneratedColumn<String>(
+    'result_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _answerTextMeta = const VerificationMeta(
+    'answerText',
+  );
+  @override
+  late final GeneratedColumn<String> answerText = GeneratedColumn<String>(
+    'answer_text',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _confidenceMeta = const VerificationMeta(
+    'confidence',
+  );
+  @override
+  late final GeneratedColumn<double> confidence = GeneratedColumn<double>(
+    'confidence',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _abstentionReasonMeta = const VerificationMeta(
+    'abstentionReason',
+  );
+  @override
+  late final GeneratedColumn<String> abstentionReason = GeneratedColumn<String>(
+    'abstention_reason',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sourceNoteIdsMeta = const VerificationMeta(
+    'sourceNoteIds',
+  );
+  @override
+  late final GeneratedColumn<String> sourceNoteIds = GeneratedColumn<String>(
+    'source_note_ids',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    query,
+    resultType,
+    answerText,
+    confidence,
+    abstentionReason,
+    sourceNoteIds,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ask_history';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AskHistoryData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('query')) {
+      context.handle(
+        _queryMeta,
+        query.isAcceptableOrUnknown(data['query']!, _queryMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_queryMeta);
+    }
+    if (data.containsKey('result_type')) {
+      context.handle(
+        _resultTypeMeta,
+        resultType.isAcceptableOrUnknown(data['result_type']!, _resultTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_resultTypeMeta);
+    }
+    if (data.containsKey('answer_text')) {
+      context.handle(
+        _answerTextMeta,
+        answerText.isAcceptableOrUnknown(data['answer_text']!, _answerTextMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_answerTextMeta);
+    }
+    if (data.containsKey('confidence')) {
+      context.handle(
+        _confidenceMeta,
+        confidence.isAcceptableOrUnknown(data['confidence']!, _confidenceMeta),
+      );
+    }
+    if (data.containsKey('abstention_reason')) {
+      context.handle(
+        _abstentionReasonMeta,
+        abstentionReason.isAcceptableOrUnknown(
+          data['abstention_reason']!,
+          _abstentionReasonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source_note_ids')) {
+      context.handle(
+        _sourceNoteIdsMeta,
+        sourceNoteIds.isAcceptableOrUnknown(
+          data['source_note_ids']!,
+          _sourceNoteIdsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceNoteIdsMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AskHistoryData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AskHistoryData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      query: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}query'],
+      )!,
+      resultType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}result_type'],
+      )!,
+      answerText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}answer_text'],
+      )!,
+      confidence: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}confidence'],
+      )!,
+      abstentionReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}abstention_reason'],
+      ),
+      sourceNoteIds: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_note_ids'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $AskHistoryTable createAlias(String alias) {
+    return $AskHistoryTable(attachedDatabase, alias);
+  }
+}
+
+class AskHistoryData extends DataClass implements Insertable<AskHistoryData> {
+  final String id;
+  final String query;
+  final String resultType;
+  final String answerText;
+  final double confidence;
+  final String? abstentionReason;
+  final String sourceNoteIds;
+  final DateTime createdAt;
+  const AskHistoryData({
+    required this.id,
+    required this.query,
+    required this.resultType,
+    required this.answerText,
+    required this.confidence,
+    this.abstentionReason,
+    required this.sourceNoteIds,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['query'] = Variable<String>(query);
+    map['result_type'] = Variable<String>(resultType);
+    map['answer_text'] = Variable<String>(answerText);
+    map['confidence'] = Variable<double>(confidence);
+    if (!nullToAbsent || abstentionReason != null) {
+      map['abstention_reason'] = Variable<String>(abstentionReason);
+    }
+    map['source_note_ids'] = Variable<String>(sourceNoteIds);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  AskHistoryCompanion toCompanion(bool nullToAbsent) {
+    return AskHistoryCompanion(
+      id: Value(id),
+      query: Value(query),
+      resultType: Value(resultType),
+      answerText: Value(answerText),
+      confidence: Value(confidence),
+      abstentionReason: abstentionReason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(abstentionReason),
+      sourceNoteIds: Value(sourceNoteIds),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory AskHistoryData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AskHistoryData(
+      id: serializer.fromJson<String>(json['id']),
+      query: serializer.fromJson<String>(json['query']),
+      resultType: serializer.fromJson<String>(json['resultType']),
+      answerText: serializer.fromJson<String>(json['answerText']),
+      confidence: serializer.fromJson<double>(json['confidence']),
+      abstentionReason: serializer.fromJson<String?>(json['abstentionReason']),
+      sourceNoteIds: serializer.fromJson<String>(json['sourceNoteIds']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'query': serializer.toJson<String>(query),
+      'resultType': serializer.toJson<String>(resultType),
+      'answerText': serializer.toJson<String>(answerText),
+      'confidence': serializer.toJson<double>(confidence),
+      'abstentionReason': serializer.toJson<String?>(abstentionReason),
+      'sourceNoteIds': serializer.toJson<String>(sourceNoteIds),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  AskHistoryData copyWith({
+    String? id,
+    String? query,
+    String? resultType,
+    String? answerText,
+    double? confidence,
+    Value<String?> abstentionReason = const Value.absent(),
+    String? sourceNoteIds,
+    DateTime? createdAt,
+  }) => AskHistoryData(
+    id: id ?? this.id,
+    query: query ?? this.query,
+    resultType: resultType ?? this.resultType,
+    answerText: answerText ?? this.answerText,
+    confidence: confidence ?? this.confidence,
+    abstentionReason: abstentionReason.present
+        ? abstentionReason.value
+        : this.abstentionReason,
+    sourceNoteIds: sourceNoteIds ?? this.sourceNoteIds,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  AskHistoryData copyWithCompanion(AskHistoryCompanion data) {
+    return AskHistoryData(
+      id: data.id.present ? data.id.value : this.id,
+      query: data.query.present ? data.query.value : this.query,
+      resultType: data.resultType.present
+          ? data.resultType.value
+          : this.resultType,
+      answerText: data.answerText.present
+          ? data.answerText.value
+          : this.answerText,
+      confidence: data.confidence.present
+          ? data.confidence.value
+          : this.confidence,
+      abstentionReason: data.abstentionReason.present
+          ? data.abstentionReason.value
+          : this.abstentionReason,
+      sourceNoteIds: data.sourceNoteIds.present
+          ? data.sourceNoteIds.value
+          : this.sourceNoteIds,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AskHistoryData(')
+          ..write('id: $id, ')
+          ..write('query: $query, ')
+          ..write('resultType: $resultType, ')
+          ..write('answerText: $answerText, ')
+          ..write('confidence: $confidence, ')
+          ..write('abstentionReason: $abstentionReason, ')
+          ..write('sourceNoteIds: $sourceNoteIds, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    query,
+    resultType,
+    answerText,
+    confidence,
+    abstentionReason,
+    sourceNoteIds,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AskHistoryData &&
+          other.id == this.id &&
+          other.query == this.query &&
+          other.resultType == this.resultType &&
+          other.answerText == this.answerText &&
+          other.confidence == this.confidence &&
+          other.abstentionReason == this.abstentionReason &&
+          other.sourceNoteIds == this.sourceNoteIds &&
+          other.createdAt == this.createdAt);
+}
+
+class AskHistoryCompanion extends UpdateCompanion<AskHistoryData> {
+  final Value<String> id;
+  final Value<String> query;
+  final Value<String> resultType;
+  final Value<String> answerText;
+  final Value<double> confidence;
+  final Value<String?> abstentionReason;
+  final Value<String> sourceNoteIds;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const AskHistoryCompanion({
+    this.id = const Value.absent(),
+    this.query = const Value.absent(),
+    this.resultType = const Value.absent(),
+    this.answerText = const Value.absent(),
+    this.confidence = const Value.absent(),
+    this.abstentionReason = const Value.absent(),
+    this.sourceNoteIds = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  AskHistoryCompanion.insert({
+    required String id,
+    required String query,
+    required String resultType,
+    required String answerText,
+    this.confidence = const Value.absent(),
+    this.abstentionReason = const Value.absent(),
+    required String sourceNoteIds,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       query = Value(query),
+       resultType = Value(resultType),
+       answerText = Value(answerText),
+       sourceNoteIds = Value(sourceNoteIds),
+       createdAt = Value(createdAt);
+  static Insertable<AskHistoryData> custom({
+    Expression<String>? id,
+    Expression<String>? query,
+    Expression<String>? resultType,
+    Expression<String>? answerText,
+    Expression<double>? confidence,
+    Expression<String>? abstentionReason,
+    Expression<String>? sourceNoteIds,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (query != null) 'query': query,
+      if (resultType != null) 'result_type': resultType,
+      if (answerText != null) 'answer_text': answerText,
+      if (confidence != null) 'confidence': confidence,
+      if (abstentionReason != null) 'abstention_reason': abstentionReason,
+      if (sourceNoteIds != null) 'source_note_ids': sourceNoteIds,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  AskHistoryCompanion copyWith({
+    Value<String>? id,
+    Value<String>? query,
+    Value<String>? resultType,
+    Value<String>? answerText,
+    Value<double>? confidence,
+    Value<String?>? abstentionReason,
+    Value<String>? sourceNoteIds,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return AskHistoryCompanion(
+      id: id ?? this.id,
+      query: query ?? this.query,
+      resultType: resultType ?? this.resultType,
+      answerText: answerText ?? this.answerText,
+      confidence: confidence ?? this.confidence,
+      abstentionReason: abstentionReason ?? this.abstentionReason,
+      sourceNoteIds: sourceNoteIds ?? this.sourceNoteIds,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (query.present) {
+      map['query'] = Variable<String>(query.value);
+    }
+    if (resultType.present) {
+      map['result_type'] = Variable<String>(resultType.value);
+    }
+    if (answerText.present) {
+      map['answer_text'] = Variable<String>(answerText.value);
+    }
+    if (confidence.present) {
+      map['confidence'] = Variable<double>(confidence.value);
+    }
+    if (abstentionReason.present) {
+      map['abstention_reason'] = Variable<String>(abstentionReason.value);
+    }
+    if (sourceNoteIds.present) {
+      map['source_note_ids'] = Variable<String>(sourceNoteIds.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AskHistoryCompanion(')
+          ..write('id: $id, ')
+          ..write('query: $query, ')
+          ..write('resultType: $resultType, ')
+          ..write('answerText: $answerText, ')
+          ..write('confidence: $confidence, ')
+          ..write('abstentionReason: $abstentionReason, ')
+          ..write('sourceNoteIds: $sourceNoteIds, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SchemaMigrationsTable extends SchemaMigrations
     with TableInfo<$SchemaMigrationsTable, SchemaMigration> {
   @override
@@ -6984,6 +7511,7 @@ abstract class _$VoxCitaDatabase extends GeneratedDatabase {
   late final $ProcessingJobsTable processingJobs = $ProcessingJobsTable(this);
   late final $ModelRunsTable modelRuns = $ModelRunsTable(this);
   late final $UserFeedbackTable userFeedback = $UserFeedbackTable(this);
+  late final $AskHistoryTable askHistory = $AskHistoryTable(this);
   late final $SchemaMigrationsTable schemaMigrations = $SchemaMigrationsTable(
     this,
   );
@@ -7006,6 +7534,7 @@ abstract class _$VoxCitaDatabase extends GeneratedDatabase {
     processingJobs,
     modelRuns,
     userFeedback,
+    askHistory,
     schemaMigrations,
   ];
 }
@@ -13981,6 +14510,273 @@ typedef $$UserFeedbackTableProcessedTableManager =
       UserFeedbackData,
       PrefetchHooks Function({bool claimId})
     >;
+typedef $$AskHistoryTableCreateCompanionBuilder =
+    AskHistoryCompanion Function({
+      required String id,
+      required String query,
+      required String resultType,
+      required String answerText,
+      Value<double> confidence,
+      Value<String?> abstentionReason,
+      required String sourceNoteIds,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$AskHistoryTableUpdateCompanionBuilder =
+    AskHistoryCompanion Function({
+      Value<String> id,
+      Value<String> query,
+      Value<String> resultType,
+      Value<String> answerText,
+      Value<double> confidence,
+      Value<String?> abstentionReason,
+      Value<String> sourceNoteIds,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+class $$AskHistoryTableFilterComposer
+    extends Composer<_$VoxCitaDatabase, $AskHistoryTable> {
+  $$AskHistoryTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get query => $composableBuilder(
+    column: $table.query,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get resultType => $composableBuilder(
+    column: $table.resultType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get answerText => $composableBuilder(
+    column: $table.answerText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get confidence => $composableBuilder(
+    column: $table.confidence,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get abstentionReason => $composableBuilder(
+    column: $table.abstentionReason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceNoteIds => $composableBuilder(
+    column: $table.sourceNoteIds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$AskHistoryTableOrderingComposer
+    extends Composer<_$VoxCitaDatabase, $AskHistoryTable> {
+  $$AskHistoryTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get query => $composableBuilder(
+    column: $table.query,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get resultType => $composableBuilder(
+    column: $table.resultType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get answerText => $composableBuilder(
+    column: $table.answerText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get confidence => $composableBuilder(
+    column: $table.confidence,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get abstentionReason => $composableBuilder(
+    column: $table.abstentionReason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceNoteIds => $composableBuilder(
+    column: $table.sourceNoteIds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$AskHistoryTableAnnotationComposer
+    extends Composer<_$VoxCitaDatabase, $AskHistoryTable> {
+  $$AskHistoryTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get query =>
+      $composableBuilder(column: $table.query, builder: (column) => column);
+
+  GeneratedColumn<String> get resultType => $composableBuilder(
+    column: $table.resultType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get answerText => $composableBuilder(
+    column: $table.answerText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get confidence => $composableBuilder(
+    column: $table.confidence,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get abstentionReason => $composableBuilder(
+    column: $table.abstentionReason,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sourceNoteIds => $composableBuilder(
+    column: $table.sourceNoteIds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$AskHistoryTableTableManager
+    extends
+        RootTableManager<
+          _$VoxCitaDatabase,
+          $AskHistoryTable,
+          AskHistoryData,
+          $$AskHistoryTableFilterComposer,
+          $$AskHistoryTableOrderingComposer,
+          $$AskHistoryTableAnnotationComposer,
+          $$AskHistoryTableCreateCompanionBuilder,
+          $$AskHistoryTableUpdateCompanionBuilder,
+          (
+            AskHistoryData,
+            BaseReferences<_$VoxCitaDatabase, $AskHistoryTable, AskHistoryData>,
+          ),
+          AskHistoryData,
+          PrefetchHooks Function()
+        > {
+  $$AskHistoryTableTableManager(_$VoxCitaDatabase db, $AskHistoryTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AskHistoryTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AskHistoryTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AskHistoryTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> query = const Value.absent(),
+                Value<String> resultType = const Value.absent(),
+                Value<String> answerText = const Value.absent(),
+                Value<double> confidence = const Value.absent(),
+                Value<String?> abstentionReason = const Value.absent(),
+                Value<String> sourceNoteIds = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AskHistoryCompanion(
+                id: id,
+                query: query,
+                resultType: resultType,
+                answerText: answerText,
+                confidence: confidence,
+                abstentionReason: abstentionReason,
+                sourceNoteIds: sourceNoteIds,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String query,
+                required String resultType,
+                required String answerText,
+                Value<double> confidence = const Value.absent(),
+                Value<String?> abstentionReason = const Value.absent(),
+                required String sourceNoteIds,
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => AskHistoryCompanion.insert(
+                id: id,
+                query: query,
+                resultType: resultType,
+                answerText: answerText,
+                confidence: confidence,
+                abstentionReason: abstentionReason,
+                sourceNoteIds: sourceNoteIds,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$AskHistoryTableProcessedTableManager =
+    ProcessedTableManager<
+      _$VoxCitaDatabase,
+      $AskHistoryTable,
+      AskHistoryData,
+      $$AskHistoryTableFilterComposer,
+      $$AskHistoryTableOrderingComposer,
+      $$AskHistoryTableAnnotationComposer,
+      $$AskHistoryTableCreateCompanionBuilder,
+      $$AskHistoryTableUpdateCompanionBuilder,
+      (
+        AskHistoryData,
+        BaseReferences<_$VoxCitaDatabase, $AskHistoryTable, AskHistoryData>,
+      ),
+      AskHistoryData,
+      PrefetchHooks Function()
+    >;
 typedef $$SchemaMigrationsTableCreateCompanionBuilder =
     SchemaMigrationsCompanion Function({
       Value<int> version,
@@ -14180,6 +14976,8 @@ class $VoxCitaDatabaseManager {
       $$ModelRunsTableTableManager(_db, _db.modelRuns);
   $$UserFeedbackTableTableManager get userFeedback =>
       $$UserFeedbackTableTableManager(_db, _db.userFeedback);
+  $$AskHistoryTableTableManager get askHistory =>
+      $$AskHistoryTableTableManager(_db, _db.askHistory);
   $$SchemaMigrationsTableTableManager get schemaMigrations =>
       $$SchemaMigrationsTableTableManager(_db, _db.schemaMigrations);
 }

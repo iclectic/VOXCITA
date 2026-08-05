@@ -8,7 +8,12 @@ import 'package:voxcita/features/library/presentation/library_screen.dart';
 import 'package:voxcita/features/library/presentation/note_detail_screen.dart';
 import 'package:voxcita/features/library/presentation/note_editor_screen.dart';
 import 'package:voxcita/features/review/presentation/review_screen.dart';
+import 'package:voxcita/features/settings/presentation/about_screen.dart';
+import 'package:voxcita/features/settings/presentation/analytics_screen.dart';
+import 'package:voxcita/features/settings/presentation/appearance_screen.dart';
+import 'package:voxcita/features/settings/presentation/privacy_screen.dart';
 import 'package:voxcita/features/settings/presentation/settings_screen.dart';
+import 'package:voxcita/features/transcription/presentation/transcript_detail_screen.dart';
 import 'package:voxcita/features/transcription/presentation/transcription_screen.dart';
 import 'package:voxcita/features/trustworthy_ask/presentation/trustworthy_ask_screen.dart';
 import 'package:voxcita/shared/widgets/app_scaffold.dart';
@@ -49,6 +54,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppRoutes.transcription,
             builder: (context, state) => const TranscriptionScreen(),
+            routes: [
+              GoRoute(
+                path: ':noteId',
+                builder: (context, state) => TranscriptDetailScreen(
+                  noteId: state.pathParameters['noteId']!,
+                ),
+              ),
+            ],
           ),
           GoRoute(
             path: AppRoutes.insights,
@@ -73,6 +86,24 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppRoutes.settings,
             builder: (context, state) => const SettingsScreen(),
+            routes: [
+              GoRoute(
+                path: 'appearance',
+                builder: (context, state) => const AppearanceScreen(),
+              ),
+              GoRoute(
+                path: 'privacy',
+                builder: (context, state) => const PrivacyScreen(),
+              ),
+              GoRoute(
+                path: 'about',
+                builder: (context, state) => const AboutScreen(),
+              ),
+              GoRoute(
+                path: 'analytics',
+                builder: (context, state) => const AnalyticsScreen(),
+              ),
+            ],
           ),
         ],
       ),
